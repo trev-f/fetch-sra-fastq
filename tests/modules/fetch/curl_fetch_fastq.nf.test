@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process CurlFetchFastq"
+    script "modules/fetch/curl_fetch_fastq.nf"
+    process "CurlFetchFastq"
+
+    test("Fetch fastq associated with SRA accession SRR1448777") {
+
+        when {
+            params {
+                readsOutDir = "${outputDir}/data/reads/raw"
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        'niceFilename': 'SRR1448777_GSM1418960_H3K4me3_ChIP_Nutlin-3a_Homo_sapiens_ChIP-Seq.fastq.gz', 
+                        'fastqUrl': 'ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR144/007/SRR1448777/SRR1448777.fastq.gz'
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.trace.tasks().size() == 1
+
+            String fastqPath = "${outputDir}/data/reads/raw/SRR1448777_GSM1418960_H3K4me3_ChIP_Nutlin-3a_Homo_sapiens_ChIP-Seq.fastq.gz"
+            assert path(fastqPath).md5 == 'dd4344ee1af6e0cf28042e75947a6032'
+        }
+
+    }
+
+}
