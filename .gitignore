@@ -5,3 +5,9 @@ work/
 
 # nf-test
 .nf-test
+
+# data files
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
