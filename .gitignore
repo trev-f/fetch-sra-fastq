@@ -6,6 +6,9 @@ work/
 # nf-test
 .nf-test
 
+# pipeline test runs
+test/
+
 # data files
 *.fastq
 *.fastq.gz
