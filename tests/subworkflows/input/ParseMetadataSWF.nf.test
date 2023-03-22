@@ -1,0 +1,37 @@
+nextflow_workflow {
+
+    name "Test Workflow ParseMetadataSWF"
+    script "subworkflows/input/ParseMetadataSWF.nf"
+    workflow "ParseMetadataSWF"
+
+    test("Get fastq URL and nice fastq filename from sra-explorer metadata tsv file.") {
+
+        when {
+            workflow {
+                """
+                input[0] = file("tests/data/sra_explorer_metadata.tsv", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            def expectedFastqInfo = [
+                [
+                    'niceFilename': 'SRR1448785_GSM1418968_RNAPII_ChIP_Nutlin-3a_Homo_sapiens_ChIP-Seq.fastq.gz',
+                    'fastqUrl': 'ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR144/005/SRR1448785/SRR1448785.fastq.gz'
+                ],
+                [
+                    'niceFilename': 'SRR1448777_GSM1418960_H3K4me3_ChIP_Nutlin-3a_Homo_sapiens_ChIP-Seq.fastq.gz',
+                    'fastqUrl': 'ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR144/007/SRR1448777/SRR1448777.fastq.gz'
+                ],
+            ]
+            with(workflow.out.fastqInfo_ch) {
+                assert size() == 2
+            }
+        }
+
+    }
+
+}
