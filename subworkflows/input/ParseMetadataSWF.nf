@@ -8,8 +8,6 @@ workflow ParseMetadataSWF {
             .splitCsv(header:true, sep:'\t')
             .map { extractFastqInfo(it) }
             .set { fastqInfo }
-        
-        fastqInfo.view()
     
     emit:
         fastqInfo_ch = fastqInfo
