@@ -3,7 +3,7 @@ process CurlFetchFastq {
 
     publishDir "${params.readsOutDir}", mode: 'copy'
 
-    container 'docker pull quay.io/biocontainers/sra-tools:3.0.3--h87f3376_0'
+    container 'quay.io/biocontainers/sra-tools:3.0.3--h87f3376_0'
 
     input:
         tuple val(niceFilename), val(fastqUrl)
